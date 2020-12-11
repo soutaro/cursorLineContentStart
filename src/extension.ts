@@ -9,7 +9,9 @@ export function activate(context: vscode.ExtensionContext) {
 				const line = editor.document.lineAt(activePosition)
 
 				const contentIndex = line.firstNonWhitespaceCharacterIndex
-				const position = activePosition.character > contentIndex ? activePosition.with(undefined, contentIndex) : activePosition.with(undefined, 0)
+				const position = (activePosition.character > contentIndex || activePosition.character == 0)
+													? activePosition.with({ character: contentIndex })
+													: activePosition.with({ character: 0 })
 
 				const sel = new vscode.Selection(position, position)
 				editor.selections = [sel, ...editor.selections.slice(1)]
